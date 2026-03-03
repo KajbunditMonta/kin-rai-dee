@@ -94,6 +94,23 @@ function HomeRestaurant () {
         }
     }
 
+    const OrderStatusHandle = async (id, status) => {
+        try {
+
+            const res = await axios.put(`http://localhost:5000/api/OrderMenu/setOrderStatus/${id}`, {
+                status : status
+            });
+
+            if (res.status === 200) {
+                alert("เปลี่ยนสถานะเสร็จสิ้น");
+            }
+
+        } catch (err) {
+            console.error("Update Status Error:", err);
+            alert("ไม่สามารถเปลี่ยนสถานะออเดอร์ได้ในขณะนี้");
+        }
+    }
+
     return (
         <div className="min-h-screen w-full flex flex-col items-center bg-gray-100 font-notoSans pb-40">
             
@@ -153,13 +170,15 @@ function HomeRestaurant () {
 
                             <div className='flex justify-center flex-row pt-4'>
                                 <div className='pr-2'>
-                                <button className='bg-red-500 text-center w-20 h-10 rounded-xl text-white hover:bg-red-700 active:scale-[0.98]'>
-                                    ปฎิเสธ                                
+                                <button className='bg-red-500 text-center w-20 h-10 rounded-xl text-white hover:bg-red-700 active:scale-[0.98]'
+                                    onClick={ () => OrderStatusHandle(item._id, "denied")}>
+                                        ปฎิเสธ                                
                                 </button>
                                 </div>
                                 <div className='pl-2'>
-                                <button className='bg-green-500 text-center w-20 h-10 rounded-xl text-white hover:bg-green-700 active:scale-[0.98]'>
-                                    เสร็จสิ้น                               
+                                <button className='bg-green-500 text-center w-20 h-10 rounded-xl text-white hover:bg-green-700 active:scale-[0.98]'
+                                    onClick={ () => OrderStatusHandle(item._id, "done")}>
+                                        เสร็จสิ้น                               
                                 </button>
                                 </div>
                             </div>

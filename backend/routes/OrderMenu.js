@@ -23,4 +23,30 @@ router.get('/getOrder/:restaurantId', async (req, res) => {
     }
 });
 
+router.put('/setOrderStatus/:id', async (req, res) => {
+    try {
+
+        const { id } = req.params;
+        const { status } = req.body;
+
+        const updatedOrder = await Order.findOneAndUpdate(
+            { _id : id },
+            { OrderStatus : status },
+            { returnDocument : 'after' }
+        );
+
+        if (!updatedOrder) {
+            return res.status(404).json({ message: "ไม่พบข้อมูลออเดอร์" });
+        }
+
+        res.status(200).json({ 
+            message : "อัพเดตสถานะออเดอร์เสร็จสิ้น",
+            status : updatedOrder
+        })
+
+    } catch (err) {
+        res.status(500).json({ message : "Backend Error : " + err.message});
+    }
+})
+
 export default router;
