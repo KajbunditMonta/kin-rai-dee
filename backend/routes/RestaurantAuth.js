@@ -88,6 +88,7 @@ router.post ('/LoginRestaurant', async (req, res) => {
         res.status(200).json({
             message : "เข้าสู่ระบบสำเร็จ",
             user : {
+                _id : user._id,
                 username : user.username,
                 email : user.email,
                 type : user.type
