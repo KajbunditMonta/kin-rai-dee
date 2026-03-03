@@ -5,6 +5,7 @@ import axios from "axios";
 function RegisterRestaurant () {
 
     const [username, setUsername] = useState("");
+    const [shopName, setShopName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setconfirmPassword] = useState("");
@@ -13,7 +14,7 @@ function RegisterRestaurant () {
 
     const handlePegister = async () => {
 
-        if (!username || !email || !password) {
+        if (!username || !email || !password || !shopName) {
             alert("กรุณากรอกข้อมูลให้ครบถ้วนทุกช่อง");
             return;
         }
@@ -31,6 +32,7 @@ function RegisterRestaurant () {
         try {
 
             const response = await axios.post("http://localhost:5000/api/RestaurantAuth/RegisterRestaurant", {
+                shopName,
                 username,
                 email,
                 password
@@ -54,15 +56,29 @@ function RegisterRestaurant () {
                 </h1>
             </div>
 
-            <div className = "pt-10 pr-48">
+            <div className = "pt-10 pr-28">
                 <label className = "text-sm">
-                    ชื่อร้าน
+                    ชื่อร้าน (แสดงในระบบ)
                 </label>
             </div>
 
             <div className = "pt-1">
                 <input className = "rounded-md border-2 min-h-10 min-w-60 text-center"
                     placeholder = "ชื่อร้าน"
+                    value = {shopName}
+                    onChange = { (e) => setShopName(e.target.value)}
+                />
+            </div>
+
+            <div className = "pt-10 pr-48">
+                <label className = "text-sm">
+                    ชื่อผู้ใช้
+                </label>
+            </div>
+
+            <div className = "pt-1">
+                <input className = "rounded-md border-2 min-h-10 min-w-60 text-center"
+                    placeholder = "ชื่อผู้ใช้"
                     value = {username}
                     onChange = { (e) => setUsername(e.target.value)}
                 />
@@ -114,7 +130,7 @@ function RegisterRestaurant () {
             </div>
 
             <div onClick = {handlePegister} className = "pt-10">
-                <button className = " bg-blue-400 text-white min-h-10 min-w-40 rounded-lg hover:bg-blue-700 active:bg-blue-800 active:scale-[0.98]">
+                <button className = " bg-orange-400 text-white min-h-10 min-w-40 rounded-lg hover:bg-orange-700 active:bg-orange-800 active:scale-[0.98]">
                     สมัครสมาชิก
                 </button>
             </div>

@@ -11,7 +11,12 @@ const router = express.Router();
 router.post ('/RegisterRestaurant', async (req, res) => {
     try {
 
-        const { username, email, password} = req.body;
+        const { shopName, username, email, password } = req.body;
+
+        const shopNameExists = await Restaurant.findOne({ shopName });
+        if (shopNameExists) {
+            return res.status(400).json({ message : "ไม่สามารถใช้ชื่อร้านนี้ได้"})
+        }
 
         const emailExists = await Restaurant.findOne({ email });
         if (emailExists) {
@@ -35,6 +40,7 @@ router.post ('/RegisterRestaurant', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         const newUser = new Restaurant({
+            shopName,
             username,
             email,
             password : hashedPassword
@@ -164,7 +170,7 @@ router.put('/UpdateMenu/:id', upload.single('image'), async (req, res) => {
         const UpdateMenu = await Menu.findByIdAndUpdate(
             id,
             updateData,
-            { new : true }
+            { returnDocument: 'after' }
         );
 
         if (!UpdateMenu) {
@@ -196,7 +202,7 @@ router.post('/uploadRestaurantImage', upload.single('image'), async (req, res) =
         const updated = await Restaurant.findOneAndUpdate(
             { username },
             { image: `/uploads/${req.file.filename}` },
-            { new: true }
+            { returnDocument: 'after' }
         );
         res.status(200).json({ message: "อัปโหลดสำเร็จ", image: updated.image });
     } catch (err) {
@@ -253,7 +259,7 @@ router.put('/setStatus/:username', async (req, res) => {
         const updatedShop = await Restaurant.findOneAndUpdate(
             { username : username },
             { isOpen : isOpen },
-            { new : true }
+            { returnDocument: 'after' }
         );
 
         if (!updatedShop) {
