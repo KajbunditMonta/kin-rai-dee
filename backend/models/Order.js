@@ -6,6 +6,7 @@ const OrderSchema = new mongoose.Schema({
     items: {type: Array, require: true},
     address: {type: String, require: true},
     totalPrice: {type: Number, require: true},
+    OrderStatus: {type: String, default: ""},
     createAt: {type: Date, default: Date.now}
 });
 
