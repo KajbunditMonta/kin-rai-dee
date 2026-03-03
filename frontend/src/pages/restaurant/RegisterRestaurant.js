@@ -9,12 +9,22 @@ function RegisterRestaurant () {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setconfirmPassword] = useState("");
+    const [img, setImg] = useState(null);
+    const [preview, setPreview] = useState(null);
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setImg(file);
+            setPreview(URL.createObjectURL(file));
+        }
+    };
 
     const navigate = useNavigate();
 
     const handlePegister = async () => {
 
-        if (!username || !email || !password || !shopName) {
+        if (!username || !email || !password || !shopName || img === null) {
             alert("กรุณากรอกข้อมูลให้ครบถ้วนทุกช่อง");
             return;
         }
@@ -29,13 +39,17 @@ function RegisterRestaurant () {
             return;
         }
 
+        const formData = new FormData();
+        formData.append("shopName", shopName);
+        formData.append("username", username);
+        formData.append("email", email);
+        formData.append("password", password);
+        formData.append("image", img);
+
         try {
 
-            const response = await axios.post("http://localhost:5000/api/RestaurantAuth/RegisterRestaurant", {
-                shopName,
-                username,
-                email,
-                password
+            const response = await axios.post("http://localhost:5000/api/RestaurantAuth/RegisterRestaurant", formData, {
+                headers : { "Content-Type" : "mulripart/formData" }
             })
 
             alert(response.data.message);
@@ -48,13 +62,41 @@ function RegisterRestaurant () {
     };
 
     return (
-        <div className = "h-screen flex flex-col items-center bg-gray-100 font-notoSans">
+        <div className = "m-h-screen flex flex-col items-center bg-gray-100 font-notoSans">
 
             <div className = "pt-16">
-                <h1 className = "font-bold text-3xl font-notoSansBold">
+                <h1 className = "text-3xl font-notoSansBold">
                     สมัครสมาชิก
                 </h1>
             </div>
+            
+            {preview && (
+                <div className="flex justify-center flex-col items-center pt-10">
+                    <p className = "pr-36 pb-5 text-sm">รูปโปรไฟล์ร้าน</p>
+                    <label>
+                        <img src={preview} className="w-40 h-40 rounded-xl" alt="Preview" />
+                        <input className = 'pl-16'
+                        type = 'file'
+                        accept='image/*'
+                        onChange = { handleFileChange }
+                        hidden = 'hidden'
+                    />
+                    </label>
+                    
+                    <p className = 'underline text-gray-400 pt-2'>คลิ๊กที่รูปเพื่ออัพโหลดรูปใหม่</p>
+                </div>
+            )}
+
+            {!preview && (
+                <div className = 'flex flex-col items-center justify-center pt-10'>
+                    <p className = "pr-36 pb-5 text-sm">รูปโปรไฟล์ร้าน</p>
+                    <input className = 'pl-16'
+                        type = 'file'
+                        accept='image/*'
+                        onChange = { handleFileChange }
+                    />
+                </div>
+            )}
 
             <div className = "pt-10 pr-28">
                 <label className = "text-sm">
@@ -70,7 +112,7 @@ function RegisterRestaurant () {
                 />
             </div>
 
-            <div className = "pt-10 pr-48">
+            <div className = "pt-5 pr-48">
                 <label className = "text-sm">
                     ชื่อผู้ใช้
                 </label>
