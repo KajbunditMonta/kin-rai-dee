@@ -18,10 +18,13 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage : storage});
 
-router.post ('/RegisterRestaurant', upload.single('image'), async (req, res) => {
+router.post ('/RegisterRestaurant', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'imagePP', maxCount: 1 }]), async (req, res) => {
     try {
 
         const { shopName, username, email, password } = req.body;
+
+        const imageFile = req.files['image'] ? `/uploads/${req.files['image'][0].filename}` : "";
+        const imageFilePP = req.files['imagePP'] ? `/uploads/${req.files['imagePP'][0].filename}` : "";
 
         const shopNameExists = await Restaurant.findOne({ shopName });
         if (shopNameExists) {
@@ -54,7 +57,8 @@ router.post ('/RegisterRestaurant', upload.single('image'), async (req, res) => 
             username,
             email,
             password : hashedPassword,
-            image : `/uploads/${req.file.filename}`
+            image : imageFile,
+            imagePP : imageFilePP
         });
 
         await newUser.save();
