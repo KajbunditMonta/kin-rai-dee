@@ -11,6 +11,9 @@ function RegisterRestaurant () {
     const [confirmPassword, setconfirmPassword] = useState("");
     const [img, setImg] = useState(null);
     const [preview, setPreview] = useState(null);
+    const [imgPP, setImgPP] = useState(null);
+    const [previewPP, setPreviewPP] = useState(null);
+
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -20,11 +23,19 @@ function RegisterRestaurant () {
         }
     };
 
+    const handleFileChangePP = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setImgPP(file);
+            setPreviewPP(URL.createObjectURL(file));
+        }
+    };
+
     const navigate = useNavigate();
 
     const handlePegister = async () => {
 
-        if (!username || !email || !password || !shopName || img === null) {
+        if (!username || !email || !password || !shopName || img === null || imgPP === null) {
             alert("กรุณากรอกข้อมูลให้ครบถ้วนทุกช่อง");
             return;
         }
@@ -45,11 +56,12 @@ function RegisterRestaurant () {
         formData.append("email", email);
         formData.append("password", password);
         formData.append("image", img);
+        formData.append("imagePP", imgPP);
 
         try {
 
             const response = await axios.post("http://localhost:5000/api/RestaurantAuth/RegisterRestaurant", formData, {
-                headers : { "Content-Type" : "mulripart/formData" }
+                headers : { "Content-Type" : "multipart/formData" }
             })
 
             alert(response.data.message);
@@ -62,7 +74,7 @@ function RegisterRestaurant () {
     };
 
     return (
-        <div className = "m-h-screen flex flex-col items-center bg-gray-100 font-notoSans">
+        <div className = "min-h-screen flex flex-col items-center bg-gray-100 font-notoSans">
 
             <div className = "pt-16">
                 <h1 className = "text-3xl font-notoSansBold">
@@ -170,6 +182,34 @@ function RegisterRestaurant () {
                     onChange = { (e) => setconfirmPassword(e.target.value)}
                 />
             </div>
+            
+            {previewPP && (
+                <div className="flex justify-center flex-col items-center pt-10">
+                    <p className = "pr-36 pb-5 text-sm">คิวอาร์โค้ดพร้อมเพย์</p>
+                    <label>
+                        <img src={previewPP} className="w-40 h-40 rounded-xl" alt="Preview" />
+                        <input className = 'pl-16'
+                        type = 'file'
+                        accept='image/*'
+                        onChange = { handleFileChangePP }
+                        hidden = 'hidden'
+                    />
+                    </label>
+                    
+                    <p className = 'underline text-gray-400 pt-2'>คลิ๊กที่รูปเพื่ออัพโหลดรูปใหม่</p>
+                </div>
+            )}
+
+            {!previewPP && (
+                <div className = 'flex flex-col items-center justify-center pt-10'>
+                    <p className = "pr-32 pb-5 text-sm">คิวอาร์โค้ดพร้อมเพย์</p>
+                    <input className = 'pl-16'
+                        type = 'file'
+                        accept='image/*'
+                        onChange = { handleFileChangePP }
+                    />
+                </div>
+            )}
 
             <div onClick = {handlePegister} className = "pt-10">
                 <button className = " bg-orange-400 text-white min-h-10 min-w-40 rounded-lg hover:bg-orange-700 active:bg-orange-800 active:scale-[0.98]">

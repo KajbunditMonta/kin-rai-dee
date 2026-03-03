@@ -9,6 +9,7 @@ const restaurantSchema = mongoose.Schema({
     createdAt : {type : Date, default : Date.now},
     isOpen: { type: Boolean, default: false},
     image: { type: String, default: "" },
+    imagePP: { type: String, default: "" },
     resetPasswordToken: String,
     resetPasswordExpired: Date
 });
