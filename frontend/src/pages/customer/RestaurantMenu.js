@@ -9,22 +9,32 @@ function RestaurantMenu() {
     const [shop, setShop] = useState(null);   
     const [menus, setMenus] = useState([]);   
     const [loading, setLoading] = useState(true);
+    const [cart, setCart] = useState([]);
 
     useEffect(() => {
-    const fetchData = async () => {
+        const fetchData = async () => {
             try {
                 const res = await axios.get(`http://localhost:5000/api/RestaurantAuth/getMenu/${id}`);
                 setShop(res.data.shopData);
                 setMenus(res.data.menuData);
             } catch (err) {
                 console.error("Error:", err);
-                setLoading(false);
             } finally {
                 setLoading(false); 
             }
         };
         fetchData();
-    }, [id, navigate]);
+    }, [id]);
+
+    useEffect(() => {
+        const syncCart = () => {
+            const saved = localStorage.getItem(`cart_${id}`);
+            setCart(saved ? JSON.parse(saved) : []);
+        }
+        syncCart();
+        window.addEventListener("focus", syncCart);
+        return () => window.removeEventListener("focus", syncCart);
+    }, [id])
 
     if (loading) return <div className="text-center mt-20">กำลังโหลดเมนู</div>;
 
@@ -36,6 +46,9 @@ function RestaurantMenu() {
             }
         });
     };
+
+    const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const cartTotal = cart.reduce((sum, item) => sum + item.totalPrice, 0);
 
     return (
         <div className="min-h-screen bg-gray-50 pb-20">
@@ -81,7 +94,7 @@ function RestaurantMenu() {
                                         <span className="text-orange-500 font-bold text-lg">{food.price}.-</span>
                                         <button 
                                             onClick={() => handleOrderfood(food)}
-                                            className="bg-blue-500 text-white px-3 py-1 rounded-lg text-sm shadow hover:bg-blue-600 active:scale-95">
+                                            className="bg-orange-500 text-white px-3 py-1 rounded-lg text-sm shadow active:scale-95">
                                             +
                                         </button>
                                     </div>
@@ -93,7 +106,17 @@ function RestaurantMenu() {
                     )}
                 </div>
             </div>
-
+            {cartCount > 0 && (
+                <div className="fixed bottom-0 left-0 right-0 p-4">
+                    <button 
+                        onClick={() => navigate(`/cart/${id}`, {state: {shop}})}
+                        className="w-full bg-orange-500 text-white py-3 rounded-2xl font-bold text-lg shadow-lg hover:bg-orange-600 active:scale-95 flex justify-between items-center px-6"
+                    >
+                        <span>{cartCount} รายการ</span>
+                        <span>${cartTotal.toFixed(2)}</span>
+                    </button>
+                </div>
+            )}
         </div>
     );
 }
