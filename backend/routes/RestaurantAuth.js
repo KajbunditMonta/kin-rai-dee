@@ -8,7 +8,17 @@ import Menu from '../models/Menu.js';
 
 const router = express.Router();
 
-router.post ('/RegisterRestaurant', async (req, res) => {
+const storage = multer.diskStorage({
+    destination : (req, file, cb) => {
+        cb(null, "uploads/");
+    },
+    filename : (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+const upload = multer({ storage : storage});
+
+router.post ('/RegisterRestaurant', upload.single('image'), async (req, res) => {
     try {
 
         const { shopName, username, email, password } = req.body;
@@ -43,7 +53,8 @@ router.post ('/RegisterRestaurant', async (req, res) => {
             shopName,
             username,
             email,
-            password : hashedPassword
+            password : hashedPassword,
+            image : `/uploads/${req.file.filename}`
         });
 
         await newUser.save();
@@ -84,17 +95,6 @@ router.post ('/LoginRestaurant', async (req, res) => {
     }
 
 })
-
-
-const storage = multer.diskStorage({
-    destination : (req, file, cb) => {
-        cb(null, "uploads/");
-    },
-    filename : (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
-    }
-});
-const upload = multer({ storage : storage});
 
 router.post ('/AddMenu', upload.single('image'), async (req, res) => {
 
