@@ -217,7 +217,7 @@ function RegisterRestaurant () {
                 </button>
             </div>
 
-            <div className = "pt-16 flex flex-row">
+            <div className = "pt-16 flex flex-row mb-10">
                 <p className = "text-sm">
                     มีสมาชิกอยู่แล้ว?
                 </p>

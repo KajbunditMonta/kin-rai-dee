@@ -144,7 +144,7 @@ function AddMenu () {
                 />
             </div>
             
-            <div className = 'flex flex-col items-center pt-10'>
+            <div className = 'flex flex-col items-center pt-10 mb-10'>
                 <button onClick = {saveHandle} className = 'bg-blue-400 h-16 w-40 rounded-xl text-white'>
                     บันทึกเมนู
                 </button>
