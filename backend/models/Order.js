@@ -7,6 +7,7 @@ const OrderSchema = new mongoose.Schema({
     address: {type: String, require: true},
     totalPrice: {type: Number, require: true},
     OrderStatus: {type: String, default: ""},
+    paySlip: {type: String, require: true},
     createAt: {type: Date, default: Date.now}
 });
 

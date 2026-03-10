@@ -95,20 +95,45 @@ function HomeRestaurant () {
     }
 
     const OrderStatusHandle = async (id, status) => {
-        try {
 
-            const res = await axios.put(`http://localhost:5000/api/OrderMenu/setOrderStatus/${id}`, {
-                status : status
-            });
+        let showText;
 
-            if (res.status === 200) {
-                alert("เปลี่ยนสถานะเสร็จสิ้น");
+        if (status === "done") {
+            showText = "จัดส่งสำเร็จ";
+        }
+
+        if (status === "done" && window.confirm(`ต้องการเปลี่ยนสถานะคำสั่งซื้อเป็น "${showText} " หรือไม่`)) {
+            try {
+
+                const res = await axios.put(`http://localhost:5000/api/OrderMenu/setOrderStatus/${id}`, {
+                    status : status
+                });
+
+                if (res.status === 200) {
+                    alert("เปลี่ยนสถานะเสร็จสิ้น");
+                }
+
+            } catch (err) {
+                console.error("Update Status Error:", err);
+                alert("ไม่สามารถเปลี่ยนสถานะออเดอร์ได้ในขณะนี้");
+            }
+        } 
+
+        let reason = "";
+
+        if (status === "denied") {
+
+            reason = window.prompt("เหตุผลที่ปฏิเสธคำสั่งซื้อ");
+
+            if (reason === "") {
+                alert("โปรดให้เหตุผลการยกเลิกคำสั่งซื้อ");
+                return;
             }
 
-        } catch (err) {
-            console.error("Update Status Error:", err);
-            alert("ไม่สามารถเปลี่ยนสถานะออเดอร์ได้ในขณะนี้");
+
+
         }
+
     }
 
     return (
@@ -178,7 +203,7 @@ function HomeRestaurant () {
                                 <div className='pl-2'>
                                 <button className='bg-green-500 text-center w-20 h-10 rounded-xl text-white hover:bg-green-700 active:scale-[0.98]'
                                     onClick={ () => OrderStatusHandle(item._id, "done")}>
-                                        เสร็จสิ้น                               
+                                        จัดส่งสำเร็จ                               
                                 </button>
                                 </div>
                             </div>
