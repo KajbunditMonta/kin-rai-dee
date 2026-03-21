@@ -6,6 +6,7 @@ import profileImg from '../../src/profile.png';
 import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function AcceptOrder () {
 
@@ -127,8 +128,10 @@ function AcceptOrder () {
 
                                 <div className='flex justify-center items-center pt-4'>
                                     <p className='font-bold'>ราคารวม :</p>
-                                    <span className='pl-2'>{item.totalPrice}</span>
+                                    <span className='pl-2 text-green-700 font-notoSansBold text-2xl'>{item.totalPrice}</span>
                                 </div>
+
+                                
 
                             </div>
                         )

@@ -127,7 +127,7 @@ function RejectOrder () {
 
                                 <div className='flex justify-center items-center pt-4'>
                                     <p className='font-bold'>เหตุผล : </p>
-                                    <span>{item.RejectReason}</span>
+                                    <span className='pl-2 text-red-700 font-notoSansBold text-xl'>{item.RejectReason}</span>
                                 </div>
 
                             </div>
