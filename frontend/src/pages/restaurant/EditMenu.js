@@ -1,4 +1,4 @@
-import backImg from '../../src/back.jpg'
+import backImg from '../../src/back.jpg';
 
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
