@@ -125,6 +125,45 @@ function HomeRestaurant () {
 
     }
 
+    const acceptHandle = async (orderId) => {
+
+        let input;
+        let isValid = false;
+        let price = 0;
+
+        while (!isValid) {
+            input = window.prompt("กรุณาระบุราคารวม (ใส่เฉพาะตัวเลข):");
+
+            if (input === null) return; 
+
+            if (input.trim() !== "" && !isNaN(input)) {
+                price = Number(input);
+                isValid = true;
+            } else {
+                alert("กรุณากรอกเฉพาะตัวเลขเท่านั้น");
+            }
+        }
+
+        try {
+            
+            const res = await axios.put(`http://localhost:5000/api/OrderMenu/acceptOrder/${orderId}`, {
+                price : price
+            });
+
+            if (res.status === 200) {
+            alert("รับออเดอร์เรียบร้อย");
+            window.location.reload();
+        }
+
+        } catch (err) {
+            console.error("Reject order Error:", err);
+            alert("ไม่สามารถรับออเดอร์ได้ในขนะนี้")
+        }
+
+    } 
+
+    const pendingOrders = order.filter(item => !item.OrderStatus || item.OrderStatus === "");
+
     return (
         <div className="min-h-screen w-full flex flex-col items-center bg-gray-100 font-notoSans pb-40">
             
@@ -152,7 +191,7 @@ function HomeRestaurant () {
             </div>
 
             <div className='w-80 pt-3'>
-                {order.length === 0 ? (
+                {pendingOrders.length === 0 ? (
                     <div className='flex justify-center pb-10'>
                         <p className='pt-14 text-gray-400'>ไม่มีคำสั่งซื้อ ณ ตอนนี้ . . .</p>
                     </div>
@@ -173,16 +212,12 @@ function HomeRestaurant () {
                                     </div>
                                 ))}
 
-                                <div className='pt-2 pl-2 flex flex-row justify-between'>
-                                    <p>ราคารวม</p>
-                                    <p className='font-notoSansBold text-green-700 text-xl'>{item.totalPrice}</p>
-                                </div>
-
                                 <div className='flex justify-center pt-4 pb-2'>
                                     <p className='font-notoSansBold text-sm text-gray-700'>📍 ส่งที่ : {item.address}</p>
                                 </div>
 
                                 <div className='flex justify-center flex-row pt-4'>
+
                                     <div className=''>
                                         <button className='bg-red-500 text-white w-20 h-10 rounded-xl active:scale-[0.98] hover:bg-red-700'
                                             onClick={() => rejectHandle(item._id)}
@@ -190,6 +225,15 @@ function HomeRestaurant () {
                                             ปฏิเสธ
                                         </button>
                                     </div>
+
+                                    <div className='pl-2'>
+                                        <button className='bg-green-500 text-white w-20 h-10 rounded-xl active:scale-[0.98] hover:bg-green-700'
+                                            onClick={() => acceptHandle(item._id)}
+                                        >
+                                            รับออเดอร์
+                                        </button>
+                                    </div>
+
                                 </div>
 
                             </div>

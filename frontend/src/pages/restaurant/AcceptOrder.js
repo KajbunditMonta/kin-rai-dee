@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import axios from "axios";
 
-function RejectOrder () {
+function AcceptOrder () {
 
     const userData = JSON.parse(localStorage.getItem('user'));
     const username = userData?.username;
@@ -88,23 +88,23 @@ function RejectOrder () {
 
     }, [restaurantId]);
 
-    const pendingOrders = order.filter(item => item.OrderStatus === "reject");
+    const pendingOrdersA = order.filter(item => item.OrderStatus === "accept");
 
     return(
         <div className="min-h-screen w-full flex flex-col items-center bg-gray-100 font-notoSans pb-40">
 
             <div className='pt-12 flex items-center justify-center flex-shrink-0 pb-4'>
-                <p className='text-2xl font-bold'>คำสั่งซื้อที่ปฏิเสธ</p>
+                <p className='text-2xl font-bold'>ออเดอร์ที่รับมาแล้ว</p>
             </div>
 
             <div className='w-80 pt-3'>
-                {pendingOrders.length === 0 ? (
+                {pendingOrdersA.length === 0 ? (
                     <div className='flex justify-center pb-10'>
-                        <p className='pt-14 text-gray-400'>ไม่มีคำสั่งซื้อที่ปฏิเสธ ณ ตอนนี้ . . .</p>
+                        <p className='pt-14 text-gray-400'>ไม่มีออเดอร์ที่รับมา ณ ตอนนี้ . . .</p>
                     </div>
                 ) : (
-                    order.map((item, index) => ( item.OrderStatus === "reject" && (
-                            <div key={index} className='bg-red-100 rounded-xl mb-4 shadow-md p-4'>
+                    order.map((item, index) => ( item.OrderStatus === "accept" && (
+                            <div key={index} className='bg-gray-300 rounded-xl mb-4 shadow-md p-4'>
                                 <h1 className='font-notoSansBold text-blue-700 text-lg mb-2'> 👤 {item.customerName}</h1>
 
                                 {item.items.map((food, idx) => (
@@ -126,8 +126,8 @@ function RejectOrder () {
                                 </div>
 
                                 <div className='flex justify-center items-center pt-4'>
-                                    <p className='font-bold'>เหตุผล : </p>
-                                    <span>{item.RejectReason}</span>
+                                    <p className='font-bold'>ราคารวม :</p>
+                                    <span className='pl-2'>{item.totalPrice}</span>
                                 </div>
 
                             </div>
@@ -149,4 +149,4 @@ function RejectOrder () {
     )
 }
 
-export default RejectOrder;
+export default AcceptOrder;

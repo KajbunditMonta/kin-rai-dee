@@ -62,6 +62,31 @@ router.put('/rejectOrder/:orderId', async (req, res) => {
     }
 });
 
+router.put('/acceptOrder/:orderId', async (req, res) => {
+    try {
+
+        const { orderId } = req.params;
+        const { price } = req.body;
+        const order = await Order.findOneAndUpdate(
+            { _id : orderId },
+            {
+                OrderStatus : 'accept',
+                totalPrice : price
+            },
+            { returnDocument : 'after'}
+        );
+
+        if (!order) {
+            return res.status(404).json({message : "ไม่พบคำสั่งซื้อนี้"});
+        }
+
+        res.status(200).json({ message : "รับออเดอร์เรียบร้อย", data : order});
+
+    } catch (err) {
+        res.status(500).json({ message : "Backend Error : " + err.message});
+    }
+});
+
 router.put('/uploadSlip/:id', upload.single('paySlip'), async (req, res) => {
     try{
 
