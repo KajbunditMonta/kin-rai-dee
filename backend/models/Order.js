@@ -9,6 +9,7 @@ const OrderSchema = new mongoose.Schema({
     OrderStatus: {type: String, default: ""},
     RejectReason: {type: String, default: ""},
     paySlip: {type: String, require: true},
+    DeriveredPT: {type: String, require: true},
     createAt: {type: Date, default: Date.now}
 });
 

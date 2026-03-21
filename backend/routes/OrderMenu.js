@@ -98,8 +98,10 @@ router.put('/uploadSlip/:id', upload.single('paySlip'), async (req, res) => {
 
         const updated = await Order.findOneAndUpdate(
             { _id : id },
-            { OrderStatus : "paid"},
-            { paySlip: `/uploads/${req.file.filename}` },
+            {   
+                OrderStatus : "paid",
+                paySlip: `/uploads/${req.file.filename}` 
+            },
             { returnDocument: 'after' }
         );
 
@@ -115,6 +117,31 @@ router.get('/getOrderCustomer/:customerUsername', async (req, res) => {
         const { customerUsername } = req.params;
         const order = await Order.find({ customerName : customerUsername }).sort({ createAt : -1 });
         res.status(200).json(order);
+    } catch (err) {
+        res.status(500).json({ message : "Backend Error : " + err.message});
+    }
+});
+
+router.put('/sendDeriveredPhoto/:OrderId', upload.single('derveredPhoto'), async (req, res) => {
+    try {
+
+        const { OrderId } = req.params;
+
+        if (!req.file) {
+            return res.status(400).json({ message: "กรุณาอัปโหลดรูปภาพ" });
+        }
+
+        const upload = await Order.findOneAndUpdate(
+            { _id : OrderId},
+            { 
+                DeriveredPT : `/uploads/${req.file.filename}`,
+                OrderStatus : "success"
+            },
+            { returnDocument : 'after' }
+        )
+
+        res.status(200).json({ message : "อัปโหลดสำเร็จ", image: upload.image});
+
     } catch (err) {
         res.status(500).json({ message : "Backend Error : " + err.message});
     }

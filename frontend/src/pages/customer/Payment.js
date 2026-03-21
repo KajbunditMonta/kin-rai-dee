@@ -20,7 +20,7 @@ function Payment() {
             }
         };
         fetchImage();
-    }, [OrderId]);
+    }, [OrderId, ShopId]);
 
     const handleBack = async () => {
 
