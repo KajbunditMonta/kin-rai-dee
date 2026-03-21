@@ -91,13 +91,94 @@ function AcceptOrder () {
 
     const pendingOrdersA = order.filter(item => item.OrderStatus === "accept");
     const pendingOrdersB = order.filter(item => item.OrderStatus === "success");
+    const pendingOrdersC = order.filter(item => item.OrderStatus === "paid");
 
-    const viewSlip = async () => {
+    const viewSlip = (slipPath) => {
 
-    }
+        if (!slipPath) {
+            return Swal.fire({
+                icon: 'error',
+                title: 'ไม่พบหลักฐาน',
+                text: 'ออเดอร์นี้ยังไม่มีการแนบสลิปเข้ามา',
+            });
+        }
+
+        const imgUrl = `http://localhost:5000${slipPath}`;
+
+        Swal.fire({
+            title : "หลักฐานการโอนเงิน",
+            imageUrl : imgUrl,
+            imageAlt : "Slip",
+            imageWidth : 320,
+            confirmButtonText : "ปิดหน้าต่าง",
+            confirmButtonColor : '#3b82f6'
+        });
+
+    }   
 
     return(
         <div className="min-h-screen w-full flex flex-col items-center bg-gray-100 font-notoSans pb-40">
+            
+            <div className='pt-12 flex items-center justify-center flex-shrink-0 pb-4'>
+                <p className='text-2xl font-bold'>คำสั่งซื้อที่ชำระแล้ว</p>
+            </div>
+            
+            <div className='w-80 pt-3'>
+                {pendingOrdersC.length === 0 ? (
+                    <div className='flex justify-center pb-10'>
+                        <p className='pt-14 text-gray-400'>ไม่มีคำสั่งซื้อที่จ่ายแล้ว ณ ตอนนี้ . . .</p>
+                    </div>
+                ) : (
+                    order.map((item, index) => ( item.OrderStatus === "paid" && (
+                            <div key={index} className='bg-blue-300 rounded-xl mb-4 shadow-md p-4'>
+                                <h1 className='font-notoSansBold text-blue-700 text-lg mb-2'> 👤 {item.customerName}</h1>
+
+                                {item.items.map((food, idx) => (
+                                    <div key={idx} className='pt-1 border-dashed last:border-0 pb-1'>
+
+                                        <div className='flex justify-between items-center'>
+                                            <p className='pl-4 text-lg'>{food.foodName}</p>
+                                            <span className='font-notoSansBold pr-2 text-lg'>x{food.quantity}</span>
+                                        </div>
+
+                                        {food.note && (
+                                            <p className='text-sm pl-10 text-red-500 italic'>*{food.note}</p>
+                                        )}
+                                    </div>
+                                ))}
+
+                                <div className='flex justify-center pt-4 pb-2'>
+                                    <p className='font-notoSansBold text-sm text-gray-700'>📍 ส่งที่ : {item.address}</p>
+                                </div>
+
+                                <div className='flex justify-center items-center pt-1'>
+                                    <p className='font-bold'>ราคารวม :</p>
+                                    <span className='pl-2 text-green-700 font-notoSansBold text-2xl'>{item.totalPrice}</span>
+                                </div>
+                                
+                                <div className='flex pt-4 flex-row'>
+                                    <div className='pl-2'>
+                                        <button className='bg-white w-48 h-10 rounded-xl active:scale-[0.98] hover:bg-gray-100'
+                                            onClick={() => viewSlip(item.paySlip)}
+                                        >
+                                            ดูหลักฐานการชำระ
+                                        </button>
+                                    </div>
+
+                                    <div className='pl-3'>
+                                        <button className='bg-green-500 text-white w-20 h-10 rounded-xl active:scale-[0.98] hover:bg-green-700'
+                                            
+                                        >
+                                            จัดส่ง
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        )
+                    ))
+                )}
+            </div>
 
             <div className='pt-12 flex items-center justify-center flex-shrink-0 pb-4'>
                 <p className='text-2xl font-bold'>ออเดอร์ที่รับมาแล้ว</p>
@@ -131,7 +212,7 @@ function AcceptOrder () {
                                     <p className='font-notoSansBold text-sm text-gray-700'>📍 ส่งที่ : {item.address}</p>
                                 </div>
 
-                                <div className='flex justify-center items-center pt-4'>
+                                <div className='flex justify-center items-center pt-1'>
                                     <p className='font-bold'>ราคารวม :</p>
                                     <span className='pl-2 text-green-700 font-notoSansBold text-2xl'>{item.totalPrice}</span>
                                 </div>
@@ -155,7 +236,7 @@ function AcceptOrder () {
             </div>
 
             <div className='pt-12 flex items-center justify-center flex-shrink-0 pb-4'>
-                <p className='text-2xl font-bold'>คำสั่งซื้อที่เสร็จสิ้น</p>
+                <p className='text-2xl font-bold'>คำสั่งซื้อที่สำเร็จแล้ว</p>
             </div>
             
             <div className='w-80 pt-3'>
