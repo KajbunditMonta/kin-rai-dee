@@ -86,7 +86,7 @@ function HomeCustomer () {
                                 <div className="pt-2 text-center">
                                     <div className="flex justify-end">
                                         <button className="bg-green-600 text-white w-16 h-10 rounded-xl active:scale-[0.98] hover:bg-green-800"
-                                            onClick={() => navigate(`/Payment/${item._id}`)}
+                                            onClick={() => navigate(`/Payment/${item._id}/${item.restaurantId}`)}
                                         >    
                                             ชำระเงิน
                                         </button>

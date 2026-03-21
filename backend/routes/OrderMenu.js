@@ -96,8 +96,9 @@ router.put('/uploadSlip/:id', upload.single('paySlip'), async (req, res) => {
             return res.status(400).json({ message: "กรุณาอัปโหลดรูปภาพ" });
         }
 
-        const updated = await Restaurant.findOneAndUpdate(
+        const updated = await Order.findOneAndUpdate(
             { _id : id },
+            { OrderStatus : "paid"},
             { paySlip: `/uploads/${req.file.filename}` },
             { returnDocument: 'after' }
         );

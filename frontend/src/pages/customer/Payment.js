@@ -1,25 +1,32 @@
+import backImg from '../../src/back.jpg'
+
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom"; 
 import axios from "axios";
 
 function Payment() {
-    const { id } = useParams(); 
+    
+    const { OrderId,ShopId } = useParams(); 
     const [PP, setPP] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchImage = async () => {
             try {
-                const res = await axios.get(`http://localhost:5000/api/RestaurantAuth/getMenu/${id}`);
+                const res = await axios.get(`http://localhost:5000/api/RestaurantAuth/getMenu/${ShopId}`);
                 setPP(res.data.shopData.imagePP); 
             } catch (err) {
                 console.error("Error:", err.response?.data || err.message);
             }
         };
         fetchImage();
-    }, [id]);
+    }, [OrderId]);
 
     const handleBack = async () => {
+
+        if (slip === null) {
+            return alert("โปรดอัพโหลดหลักฐานการชำระเงิน")
+        }
 
         const formData = new FormData();
         
@@ -29,11 +36,11 @@ function Payment() {
 
         try {
 
-            const response = await axios.put(`http://localhost:5000/api/OrderMenu/uploadSlip/${id}`, formData, {headers : { 'Content-Type' : 'multipart/form-data' }});
+            const response = await axios.put(`http://localhost:5000/api/OrderMenu/uploadSlip/${OrderId}`, formData, {headers : { 'Content-Type' : 'multipart/form-data' }});
 
             if (response.status === 200) {
                 alert("อัพโหลดสลิปสำเร็จ");
-                navigate(`/HomeCustomer`);
+                navigate(`/OrderCustomer`);
             }
 
         } catch (err) {
@@ -58,6 +65,16 @@ function Payment() {
 
     return (
         <>
+            
+            <div className='pt-10 pl-5'>
+                <button onClick = {() => navigate(-1)} className = "w-20 h-10 flex items-center justify-center rounded-full hover:bg-slate-300 active:scale-[0.98]">
+                    <img className = "w-9" 
+                        src = {backImg}
+                        alt = 'backIcon'
+                    />
+                </button>
+            </div>
+
             <div className="flex flex-col items-center pt-10 font-notoSans">
                 {PP ? (
                     <div className="w-100 h-80">
@@ -71,7 +88,7 @@ function Payment() {
                     <p className="text-gray-500">ไม่มีรูปภาพ</p>
                 )}
             </div>
-
+            
             <div>
 
                 {!preview && (
@@ -83,19 +100,19 @@ function Payment() {
                             className="pt-10 pl-20"
                             type="file"
                             accept="image/*"
-                            onChange={handleFileChange}
+                            onChange={(handleFileChange)}
                         />
 
                     </div>
                 )}
 
                 {preview && (
-                    <div className="flex flex-col items-center pt-20">
+                    <div className="flex flex-col items-center pt-10">
 
                         <p>อัพโหลดสลิปโอนเงิน</p>
 
                         <label>
-                        <img src={preview} alt="slip_preview" className="pt-5"/>
+                        <img src={preview} alt="slip_preview" className="pt-5 w-52 h-52"/>
                         <input
                             type="file"
                             accept="image/*"

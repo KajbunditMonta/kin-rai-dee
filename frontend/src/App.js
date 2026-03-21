@@ -38,7 +38,7 @@ function App() {
         <Route path = "/EditMenu" element = {<EditMenu />}/>
         <Route path="/order/:id/:foodId" element={<Orderfood />} />
         <Route path="/cart/:id" element={<Cartorder />} />
-        <Route path="/Payment/:id" element={<Payment />} />
+        <Route path="/Payment/:OrderId/:ShopId" element={<Payment />} />
         <Route path="/RejectOrder" element={<RejectOrder />} />
         <Route path="/AcceptOrder" element={<AcceptOrder />} />
       </Routes>
