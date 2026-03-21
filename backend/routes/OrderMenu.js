@@ -109,4 +109,14 @@ router.put('/uploadSlip/:id', upload.single('paySlip'), async (req, res) => {
     }
 })
 
+router.get('/getOrderCustomer/:customerUsername', async (req, res) => {
+    try {
+        const { customerUsername } = req.params;
+        const order = await Order.find({ customerName : customerUsername }).sort({ createAt : -1 });
+        res.status(200).json(order);
+    } catch (err) {
+        res.status(500).json({ message : "Backend Error : " + err.message});
+    }
+});
+
 export default router;
