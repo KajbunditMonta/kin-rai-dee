@@ -14,6 +14,7 @@ import EditMenu from './pages/restaurant/EditMenu.js';
 import Orderfood from './pages/customer/Orderfood.js';  
 import Cartorder from './pages/customer/Cartorder.js';
 import Payment from "./pages/customer/Payment.js";
+import RejectOrder from './pages/restaurant/RejectOrder.js';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -37,6 +38,7 @@ function App() {
         <Route path="/order/:id/:foodId" element={<Orderfood />} />
         <Route path="/cart/:id" element={<Cartorder />} />
         <Route path="/Payment/:id" element={<Payment />} />
+        <Route path="/RejectOrder" element={<RejectOrder />} />
       </Routes>
     </BrowserRouter>
   );

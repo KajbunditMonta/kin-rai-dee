@@ -37,31 +37,30 @@ router.get('/getOrder/:restaurantId', async (req, res) => {
     }
 });
 
-router.put('/setOrderStatus/:id', async (req, res) => {
+router.put('/rejectOrder/:orderId', async (req, res) => {
     try {
 
-        const { id } = req.params;
-        const { status } = req.body;
-
-        const updatedOrder = await Order.findOneAndUpdate(
-            { _id : id },
-            { OrderStatus : status },
-            { returnDocument : 'after' }
+        const { orderId } = req.params;
+        const { reason } = req.body;
+        const order = await Order.findOneAndUpdate(
+            { _id : orderId },
+            {
+                OrderStatus : "reject",
+                RejectReason : reason
+            },
+            { returnDocument: 'after' }
         );
 
-        if (!updatedOrder) {
-            return res.status(404).json({ message: "ไม่พบข้อมูลออเดอร์" });
+        if (!order) {
+            return res.status(404).json({ message: "ไม่พบคำสั่งซื้อนี้" });
         }
 
-        res.status(200).json({ 
-            message : "อัพเดตสถานะออเดอร์เสร็จสิ้น",
-            status : updatedOrder
-        })
+        res.status(200).json({ message : "ปฏิเสธคำสั่งซื้อเรียบร้อย", data : order});
 
     } catch (err) {
         res.status(500).json({ message : "Backend Error : " + err.message});
     }
-})
+});
 
 router.put('/uploadSlip/:id', upload.single('paySlip'), async (req, res) => {
     try{
