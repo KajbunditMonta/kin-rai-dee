@@ -1,5 +1,7 @@
 import wallet from '../../src/wallet.webp';
 import menu from '../../src/menu.webp';
+
+import Navbar from './components/Navbar';
 import homeImg from '../../src/Home.webp';
 import acceptImg from '../../src/Accept.webp';
 import cancelImg from '../../src/Cancel.png';
@@ -8,8 +10,6 @@ import profileImg from '../../src/profile.png';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-
-import Navbar from './components/Navbar';
 
 function HomeRestaurant () {
     

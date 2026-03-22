@@ -31,7 +31,7 @@ const Navbar = ({ isOpen, statusHandle, homeImg, acceptImg, cancelImg, profileIm
                 <p className='text-[10px] mt-1'>ปฏิเสธแล้ว</p>
             </button>
 
-            <button onClick={() => navigate('/Profile')} className='flex flex-col items-center group'>
+            <button onClick={() => navigate('/ProfileRestaurant')} className='flex flex-col items-center group'>
                 <img className='w-12 h-12 group-active:scale-90 transition-transform' src={profileImg} alt='Profile' />
                 <p className='text-[10px] mt-1'>โปรไฟล์</p>
             </button>
