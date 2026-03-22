@@ -6,6 +6,7 @@ import profileImg from '../../src/profile.png';
 
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 function ProfileRestaurant () {
 
@@ -104,7 +105,7 @@ function ProfileRestaurant () {
                     </div>
                     <h1 className='text-2xl font-bold mt-4'>{shop.shopName}</h1>
 
-                    <div className='w-full pl-8 pt-10'>
+                    <div className='truncate pr-60 pt-10'>
                         <p className='text-gray-500'>ชื่อผู้ใช้</p>
                     </div>
 
@@ -112,9 +113,14 @@ function ProfileRestaurant () {
                         <div className='w-72 h-12 bg-gray-300 flex justify-center items-center rounded-xl'>
                             <span className='text-gray-600'>{shop.username}</span>
                         </div>
+                        <div className='pt-1 flex justify-end pr-2'>
+                            <Link className='underline text-gray-500'>
+                                แก้ไข
+                            </Link>
+                        </div>
                     </div>
 
-                    <div className='w-full pl-8 pt-10'>
+                    <div className='truncate pr-60 pt-10'>
                         <p className='text-gray-500'>Email</p>
                     </div>
 
@@ -122,18 +128,28 @@ function ProfileRestaurant () {
                         <div className='w-72 h-12 bg-gray-300 flex justify-center items-center rounded-xl'>
                             <span className='text-gray-600'>{shop.email}</span>
                         </div>
+                        <div className='pt-1 flex justify-end pr-2'>
+                            <Link className='underline text-gray-500'>
+                                แก้ไข
+                            </Link>
+                        </div>
                     </div>
 
-                    <div className='w-full pl-8 pt-10'>
+                    <div className='truncate pr-40 pt-10'>
                         <p className='text-gray-500'>Qr code พร้อมเพย์</p>
                     </div>
 
-                    <div className='pt-2'>
-                        <div className='w-44 h-44'>
-                            <img className=''
+                    <div className='pt-4'>
+                        <div className=''>
+                            <img className='w-44 h-56 shadow-lg object-cover'
                                 src={`http://localhost:5000${shop.imagePP}`}
                                 alt='qr promtpay'
                             />
+                        </div>
+                        <div className=' flex justify-center pt-4'>
+                            <Link className='underline text-gray-500'>
+                                แก้ไข
+                            </Link>
                         </div>
                     </div>
 
