@@ -16,6 +16,7 @@ import Cartorder from './pages/customer/Cartorder.js';
 import Payment from "./pages/customer/Payment.js";
 import RejectOrder from './pages/restaurant/RejectOrder.js';
 import AcceptOrder from './pages/restaurant/AcceptOrder.js';
+import ProfileRestaurant from './pages/restaurant/ProfileRestaurant.js';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -41,6 +42,7 @@ function App() {
         <Route path="/Payment/:OrderId/:ShopId" element={<Payment />} />
         <Route path="/RejectOrder" element={<RejectOrder />} />
         <Route path="/AcceptOrder" element={<AcceptOrder />} />
+        <Route path="/ProfileRestaurant" element={<ProfileRestaurant />} />
       </Routes>
     </BrowserRouter>
   );
