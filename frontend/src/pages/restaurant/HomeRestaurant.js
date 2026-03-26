@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 function HomeRestaurant () {
-    
+
     const navigate = useNavigate();
 
     const menuManagement = () => {
@@ -48,6 +48,7 @@ function HomeRestaurant () {
     }, [username]);
 
     const [order, setOrder] = useState([]);
+    const [totalSales, setTotalSales] = useState(0);
 
     useEffect( () => {
 
@@ -60,6 +61,18 @@ function HomeRestaurant () {
                 if (res.data) {
                     setOrder(res.data);
                 }
+
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                const salesToday = res.data
+                    .filter(item => {
+                        const orderDate = new Date(item.createAt);
+                        return item.OrderStatus === "success" && orderDate >= today;
+                    })
+                    .reduce((sum, item) => sum + (Number(item.totalPrice) || 0), 0);
+                
+                setTotalSales(salesToday);
 
             } catch (err) {
                 console.error("Fetch Order Error : " + err);
@@ -170,11 +183,20 @@ function HomeRestaurant () {
             <div className="h-8"></div>
 
             <div className="bg-blue-300 w-80 h-32 rounded-3xl shadow-2xl flex-shrink-0">
-                <div className='flex flex-row pt-6 pl-3'>
-                    <img className='w-20' src={wallet} alt='wallet'/>
-                    <div className='flex flex-col pl-4'>
+                <div className='flex flex-row pt-5 pl-4'>
+
+                    <img className='w-20 object-contain' src={wallet} alt='wallet'/>
+
+                    <div className='flex flex-col pl-4 justify-center pt-3'>
                         <p className='text-white font-bold text-lg'>ยอดขายวันนี้</p>
-                        <p className='text-white font-bold text-lg text-right pt-4'>บาท</p>
+
+                        <div className='flex items-baseline gap-2 pt-3'>
+                            <span className='text-green-700 font-notoSansBold text-3xl'>
+                                {totalSales.toLocaleString()}
+                            </span>
+                            <p className='text-white font-bold text-lg pl-3'>บาท</p>
+                        </div>
+
                     </div>
                 </div>
             </div>
