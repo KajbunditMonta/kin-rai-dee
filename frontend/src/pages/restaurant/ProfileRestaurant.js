@@ -6,13 +6,12 @@ import profileImg from '../../src/profile.png';
 
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 
 function ProfileRestaurant () {
 
     const userData = JSON.parse(localStorage.getItem('user'));
     const username = userData?.username;
-    const restaurantId = userData?._id;
+    // const restaurantId = userData?._id;
 
     const [isOpen, setIsopen] = useState(false);
 
@@ -113,11 +112,6 @@ function ProfileRestaurant () {
                         <div className='w-72 h-12 bg-gray-300 flex justify-center items-center rounded-xl'>
                             <span className='text-gray-600'>{shop.username}</span>
                         </div>
-                        <div className='pt-1 flex justify-end pr-2'>
-                            <Link className='underline text-gray-500'>
-                                แก้ไข
-                            </Link>
-                        </div>
                     </div>
 
                     <div className='truncate pr-60 pt-10'>
@@ -127,11 +121,6 @@ function ProfileRestaurant () {
                     <div className='pt-2'>
                         <div className='w-72 h-12 bg-gray-300 flex justify-center items-center rounded-xl'>
                             <span className='text-gray-600'>{shop.email}</span>
-                        </div>
-                        <div className='pt-1 flex justify-end pr-2'>
-                            <Link className='underline text-gray-500'>
-                                แก้ไข
-                            </Link>
                         </div>
                     </div>
 
@@ -146,14 +135,9 @@ function ProfileRestaurant () {
                                 alt='qr promtpay'
                             />
                         </div>
-                        <div className=' flex justify-center pt-4'>
-                            <Link className='underline text-gray-500'>
-                                แก้ไข
-                            </Link>
-                        </div>
                     </div>
 
-                    <div className='pt-36'>
+                    <div className='pt-28'>
                         <div className='w-72 h-12 bg-gray-300 flex justify-center items-center rounded-xl'>
                             <span></span>
                         </div>

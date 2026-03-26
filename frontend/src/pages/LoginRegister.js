@@ -104,7 +104,7 @@ function LoginRegister () {
                 <div className = 'pt-6'>
                     <input className = "bg-gray-300 min-w-80 min-h-11 rounded-lg text-center placeholder:text-gray-600 placeholder:text-center" 
                         type = 'text'
-                        placeholder = {`${role === 'customer' ? 'ชื่อผู้ใช้' : 'ชื่อร้าน'}`}
+                        placeholder = 'ชื่อผู้ใช้'
                         value = {username}
                         onChange = {(e) => setUsername(e.target.value)}
                     />
