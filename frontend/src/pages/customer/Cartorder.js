@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import backImg from '../../src/back.jpg';
 import axios from "axios";
+import Swal from 'sweetalert2';
 
 function Cartorder() {
     const { id } = useParams();
@@ -33,7 +34,13 @@ function Cartorder() {
 
     const handleOrder = async () => {
         if (!address.trim()) {
-            alert("กรุณากรอกที่อยู่จัดส่ง");
+            Swal.fire({
+                title: 'ข้อผิดพลาด',
+                text: 'กรุณากรอกที่อยู่จัดส่ง',
+                confirmButtonText: 'ตกลง',
+                confirmButtonColor: '#F97316', 
+                shape: 'rounded-xl'
+            });
             return;
         }
         if (cart.length === 0) {
@@ -52,7 +59,12 @@ function Cartorder() {
                 totalPrice,
             });
             localStorage.removeItem(`cart_${id}`);
-            alert("สั่งอาหารสำเร็จ!");
+            Swal.fire({
+                text: 'สั่งอาหารสำเร็จ',
+                confirmButtonText: 'ตกลง',
+                confirmButtonColor: '#F97316', 
+                shape: 'rounded-xl'
+            });
             navigate(`/OrderCustomer`);
         } catch (err) {
             console.error("Order error:", err);

@@ -59,12 +59,12 @@ function HomeCustomer () {
         const imgUrl = `http://localhost:5000${DeriveredPT}`;
 
         Swal.fire({
-            title : "หลักฐานการโอนเงิน",
+            title : "หลักฐานการจัดส่ง",
             imageUrl : imgUrl,
             imageAlt : "Slip",
             imageWidth : 320,
             confirmButtonText : "ปิดหน้าต่าง",
-            confirmButtonColor : '#3b82f6'
+            confirmButtonColor : '#F97316'
         });
 
     }

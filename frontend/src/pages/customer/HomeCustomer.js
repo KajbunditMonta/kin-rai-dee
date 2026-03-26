@@ -2,6 +2,7 @@ import { ReactComponent as Logo } from '../../src/Logo.svg';
 import { Link, useNavigate } from "react-router-dom"; 
 import axios from 'axios';
 import { useState, useEffect } from "react";
+import Swal from 'sweetalert2';
 
 function HomeCustomer () {
     const [restaurant, setRestaurant] = useState([]);
@@ -22,7 +23,13 @@ function HomeCustomer () {
         if (isopen) {
             navigate(`/RestaurantMenu/${id}`);
         } else {
-            alert("ขออภัยร้านนี้ปิดให้บริการชั่วคราว"); 
+            Swal.fire({
+                title: 'แจ้งเตือน!!',
+                text: 'ขออภัยครับร้านนี้ปิดให้บริการชั่วคราว',
+                confirmButtonText: 'ตกลง',
+                confirmButtonColor: '#F97316', 
+                shape: 'rounded-xl'
+            });
         }
     }
     return (    

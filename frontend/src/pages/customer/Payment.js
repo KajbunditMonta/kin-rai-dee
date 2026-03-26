@@ -1,5 +1,5 @@
 import backImg from '../../src/back.jpg'
-
+import Swal from 'sweetalert2';
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom"; 
 import axios from "axios";
@@ -25,7 +25,12 @@ function Payment() {
     const handleBack = async () => {
 
         if (slip === null) {
-            return alert("โปรดอัพโหลดหลักฐานการชำระเงิน")
+            Swal.fire({
+                text: 'กรุณาใส่หลักฐานการโอนเงิน',
+                confirmButtonText: 'ตกลง',
+                confirmButtonColor: '#F97316', 
+                shape: 'rounded-xl'
+            });
         }
 
         const formData = new FormData();
@@ -39,7 +44,12 @@ function Payment() {
             const response = await axios.put(`http://localhost:5000/api/OrderMenu/uploadSlip/${OrderId}`, formData, {headers : { 'Content-Type' : 'multipart/form-data' }});
 
             if (response.status === 200) {
-                alert("อัพโหลดสลิปสำเร็จ");
+                Swal.fire({
+                    text: 'อัพโหลดเสร็จสิ้น',
+                    confirmButtonText: 'ปิดหน้าต่าง',
+                    confirmButtonColor: '#F97316', 
+                    shape: 'rounded-xl'
+                });
                 navigate(`/OrderCustomer`);
             }
 
